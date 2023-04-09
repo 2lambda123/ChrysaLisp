@@ -46,7 +46,7 @@
 (defun smooth-result (results val)
 	(if (> (length (push results val)) +smooth_steps)
 		(setq results (slice 1 -1 results)))
-	(list results (/ (reduce + results 0) (length results))))
+	(list results (/ (reduce (const +) results 0) (length results))))
 
 (defun update-result (node &rest vals)
 	(setq vals (map (#
@@ -71,7 +71,7 @@
 	(defq id :t select (alloc-select +select_size)
 		charts (. charts :children) net_charts (. net_charts :children)
 		net_bars (map (# (. %0 :add_bar)) net_charts)
-		net_results (list (list) (list) (list))
+		net_results (lists (length net_charts))
 		global_tasks (Global create destroy) poll_que (list))
 	(bind '(x y w h) (apply view-locate (. *window* :pref_size)))
 	(gui-add-front (. *window* :change_dirty x y w h))
