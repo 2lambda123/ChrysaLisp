@@ -19,9 +19,7 @@
 
 	(entry 'view :lisp_create '(:r0 :r1))
 
-(errorcases
-	(assign '((:r1 array_length)) '(:r2))
-	(gotoif '(:r2 /= 0) 'error))
+	(errorif-lisp-args-len :r1 error /= 0)
 
 	(vp-push :r0)
 	(call 'view :create :nil '(:r1))
@@ -48,9 +46,7 @@
 
 	(entry 'view :lisp_find_id '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 2) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 2 error)
 
 	(vp-push :r0)
 	(defq in (method-input 'view :find_id))
@@ -85,9 +81,7 @@
 
 	(entry 'view :lisp_sub '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 1) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 1 error)
 
 	(vp-push :r0)
 	(array-bind-args :r1 '(:r0))
@@ -116,9 +110,7 @@
 
 	(entry 'view :lisp_hide '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 1) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 1 error)
 
 	(vp-push :r0)
 	(array-bind-args :r1 '(:r0))
@@ -148,9 +140,7 @@
 
 	(entry 'view :lisp_add '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 2) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 2 error)
 
 	(vp-push :r0)
 	(array-bind-args :r1 '(:r0 :r1))
@@ -184,9 +174,7 @@
 
 	(entry 'view :lisp_add_back '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 2) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 2 error)
 
 	(vp-push :r0)
 	(array-bind-args :r1 '(:r0 :r1))
@@ -220,9 +208,7 @@
 
 	(entry 'view :lisp_trans_dirty '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 3) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 3 error)
 
 	(defq in (method-input 'region :translate))
 	(list-bind-args :r1 in '(:view :num :num))
@@ -254,9 +240,7 @@
 
 	(entry 'view :lisp_clr_opaque '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 1) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 1 error)
 
 	;remove any opaque region
 	(vp-push :r0)
@@ -293,9 +277,7 @@
 
 	(entry 'view :lisp_add_opaque '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 5) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 5 error)
 
 	;paste opaque region
 	(vp-push :r0)
@@ -334,9 +316,7 @@
 
 	(entry 'view :lisp_sub_opaque '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 5) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 5 error)
 
 	;remove opaque region
 	(vp-push :r0)
@@ -375,9 +355,7 @@
 
 	(entry 'view :lisp_set_flags '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 3) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 3 error)
 
 	(vp-push :r0)
 	(defq in (method-input 'view :set_flags))
@@ -408,9 +386,7 @@
 
 	(entry 'view :lisp_add_dirty '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 5) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 5 error)
 
 	;paste dirty region
 	(vp-push :r0)
@@ -453,9 +429,7 @@
 
 	(entry 'view :lisp_children '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 1) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 1 error)
 
 	(assign '(:r0) `(,this))
 	(list-bind-args :r1 `(,node) '(:view))
@@ -494,9 +468,7 @@
 
 	(entry 'view :lisp_to_front '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 1) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 1 error)
 
 	(vp-push :r0)
 	(defq in (method-input 'view :to_front))
@@ -527,9 +499,7 @@
 
 	(entry 'view :lisp_to_back '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 1) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 1 error)
 
 	(vp-push :r0)
 	(defq in (method-input 'view :to_back))
@@ -560,9 +530,7 @@
 
 	(entry 'view :lisp_hit_tree '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 3) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 3 error)
 
 	(vp-push :r0)
 	(defq in (method-input 'view :hit_tree))

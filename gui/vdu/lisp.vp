@@ -20,9 +20,7 @@
 
 	(entry 'vdu :lisp_create '(:r0 :r1))
 
-(errorcases
-	(assign '((:r1 array_length)) '(:r2))
-	(gotoif '(:r2 /= 0) 'error))
+	(errorif-lisp-args-len :r1 error /= 0)
 
 	(vp-push :r0)
 	(call 'vdu :create :nil '(:r1))
@@ -56,9 +54,7 @@
 
 	(entry 'vdu :lisp_load '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 6) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 6 error)
 
 	(push-scope)
 	(list-bind-args :r1 '(:r1 :r2 :r3 :r4 :r5 :r6) '(:vdu :list :num :num :num :num))
@@ -152,9 +148,7 @@
 
 	(entry 'vdu :lisp_configure '(:r0 :r1))
 
-(errorcases
-	(call 'lisp :env_args_sig '(:r1 ($ sig) 1) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
+	(errorif-lisp-args-sig :r1 1 error)
 
 	(push-scope)
 	(assign '(:r0) {this})
