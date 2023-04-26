@@ -311,7 +311,7 @@
 
 	(entry 'nums :lisp_sum '(:r0 :r1))
 
-	(errorif-lisp-args-sig :r1 1 error)
+	(errorif-lisp-args-sig :r1 1 'error)
 
 	(vp-push :r0)
 	(array-bind-args :r1 '(:r0))
@@ -346,12 +346,9 @@
 
 	(entry 'nums :lisp_scale `(,this ,args))
 
+	(errorif-lisp-args-sig-range :r1 2 3 'error)
+
 	(assign `((,args array_length)) `(,argc))
-(errorcases
-	(gotoif (list argc '< 2) 'error)
-	(gotoif (list argc '> 3) 'error)
-	(call 'lisp :env_args_sig `(,args ($ sig) ,argc) '(tmp))
-	(gotoif `(,tmp = 0) 'error))
 	(assign `((,args array_begin)) `(,iter_begin))
 	(array-get-args iter_begin `(,nums1 ,scale))
 	(assign `((,nums1 array_length)) `(,len1))
@@ -419,8 +416,8 @@
 
 	(entry 'nums :lisp_dot '(:r0 :r1))
 
-	(errorif-lisp-args-len :r1 /= 2 error)
-	(errorif-lisp-args-match :r1 nums 2 error)
+	(errorif-lisp-args-len :r1 /= 2 'error)
+	(errorif-lisp-args-match :r1 nums 2 'error)
 
 	(vp-push :r0 :r1)
 	(array-bind-args :r1 '(:r0 :r1))
