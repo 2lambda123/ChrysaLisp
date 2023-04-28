@@ -139,7 +139,12 @@
 (defq *boot_env* (env)
 	+byte_size 1 +short_size 2 +int_size 4 +long_size 8 +ptr_size 8
 	+str_data 24 +node_id_size 16 +net_id_size 24
-	defmacro '(macro (n a &rest _) `(defq ,n (macro ,a ~_))))
+	defmacro (list 'macro '(n a &rest _)
+		(list list defq 'n (list cat (list list ''macro 'a) '_))))
+
+(defmacro const (_)
+	; (const form)
+	(eval (macroexpand _)))
 
 (defmacro defun (n a &rest _)
 	; (defun name ([arg ...]) body)
@@ -148,15 +153,11 @@
 	; (prin [form ...])
 	; (print [form ...])
 	; (str [form ...])
-	`(defq ,n (lambda ,a ~_)))
-
-(defmacro const (_)
-	; (const form)
-	(eval (macroexpand _)))
+	(list (const defq) n (cat (list 'lambda a) _)))
 
 (defmacro static (_)
 	; (static form)
-	(cat (list quote) (list (prebind (eval (macroexpand _))))))
+	(cat (list (const quote)) (list (prebind (eval (macroexpand _))))))
 
 (defun identity (_)
 	; (identity any) -> any
@@ -202,10 +203,10 @@
 
 (defmacro inc (_)
 	; (inc num) -> num
-	`(+ ,_ 1))
+	(list (const +) _ 1))
 (defmacro dec (_)
 	; (dec num) -> num
-	`(- ,_ 1))
+	(list (const -) _ 1))
 
 (defmacro opt (x y &optional z)
 	; (opt var val [cond])
@@ -742,31 +743,31 @@
 
 (defmacro get-ubyte (s o)
 	; (get-ubyte str index) -> num
-	`(get-field ,s (+ +str_data ,o) ,(neg +byte_size)))
+	`(get-field ,s (+ ,+str_data ,o) ,(neg +byte_size)))
 (defmacro get-ushort (s o)
 	; (get-ushort str index) -> num
-	`(get-field ,s (+ +str_data ,o) ,(neg +short_size)))
+	`(get-field ,s (+ ,+str_data ,o) ,(neg +short_size)))
 (defmacro get-uint (s o)
 	; (get-uint str index) -> num
-	`(get-field ,s (+ +str_data ,o) ,(neg +int_size)))
+	`(get-field ,s (+ ,+str_data ,o) ,(neg +int_size)))
 (defmacro get-long (s o)
 	; (get-long str index) -> num
-	`(get-field ,s (+ +str_data ,o) +long_size))
+	`(get-field ,s (+ ,+str_data ,o) ,+long_size))
 (defmacro get-byte (s o)
 	; (get-byte str index) -> num
-	`(get-field ,s (+ +str_data ,o) +byte_size))
+	`(get-field ,s (+ ,+str_data ,o) ,+byte_size))
 (defmacro get-short (s o)
 	; (get-short str index) -> num
-	`(get-field ,s (+ +str_data ,o) +short_size))
+	`(get-field ,s (+ ,+str_data ,o) ,+short_size))
 (defmacro get-int (s o)
 	; (get-int str index) -> num
-	`(get-field ,s (+ +str_data ,o) +int_size))
+	`(get-field ,s (+ ,+str_data ,o) ,+int_size))
 (defmacro get-nodeid (s o)
 	; (get-nodeid str index) -> nodeid
-	`(slice ,o (+ ,o +node_id_size) ,s))
+	`(slice ,o (+ ,o ,+node_id_size) ,s))
 (defmacro get-netid (s o)
 	; (get-netid str index) -> netid
-	`(slice ,o (+ ,o +net_id_size) ,s))
+	`(slice ,o (+ ,o ,+net_id_size) ,s))
 (defun get-cstr (s o)
 	; (get-cstr str index) -> str
 	(defq k o)
